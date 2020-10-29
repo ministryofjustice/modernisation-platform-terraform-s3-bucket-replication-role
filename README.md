@@ -1,15 +1,25 @@
-# Ministry of Justice Template Repository
+# modernisation-platform-terraform-s3-bucket-replication-role
 
-Use this template to [create a repository] with the default initial files for a Ministry of Justice Github repository, including:
+A Terraform module to create an IAM role for S3 bucket replication.
 
-* The correct LICENSE
-* Github actions
-* .gitignore file
+## Usage
 
-Once you have created your repository, please:
+```
+module "s3-replication-role" {
+  source  = "modernisation-platform-terraform-s3-bucket-replication-role"
+  buckets = [module.s3-bucket.bucket.arn]
+  tags    = local.tags
+}
+```
 
-* Edit the copy of this README.md file to document your project
-* Grant permissions to the appropriate MoJ teams
-* Setup branch protection
+## Inputs
+| Name    | Description                                  | Type | Default | Required |
+|---------|----------------------------------------------|------|---------|----------|
+| buckets | A list of bucket ARNs to allow access to     | list |         | yes      |
+| tags    | Tags to apply to resources, where applicable | map  |         | yes      |
 
-[create a repository]: https://github.com/ministryofjustice/template-repository/generate
+## Outputs
+See the [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role#attributes-reference) attributes reference. This module outputs the resource map, i.e. `aws_iam_role`, so you can access each attribute from Terraform directly under the `role` output, e.g. `module.s3-replication-role.role.arn` for the role ARN.
+
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
