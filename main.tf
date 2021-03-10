@@ -4,7 +4,7 @@ locals {
 
 # S3 bucket replication: role
 resource "aws_iam_role" "default" {
-  name               = "AWSS3BucketReplication"
+  name               = "AWSS3BucketReplication${var.suffix_name}"
   assume_role_policy = data.aws_iam_policy_document.s3-assume-role-policy.json
   tags               = var.tags
 }
@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "s3-assume-role-policy" {
 }
 
 resource "aws_iam_policy" "default" {
-  name   = "AWSS3BucketReplicationPolicy"
+  name   = "AWSS3BucketReplicationPolicy${var.suffix_name}"
   policy = data.aws_iam_policy_document.default-policy.json
 }
 
