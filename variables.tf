@@ -9,7 +9,7 @@ variable "tags" {
 }
 
 variable "suffix_name" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Suffix for role and policy names"
 }
