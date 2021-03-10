@@ -7,3 +7,9 @@ variable "tags" {
   type        = map(any)
   description = "Tags to apply to resources, where applicable"
 }
+
+variable "suffix_name" {
+  type        = string
+  default     = ""
+  description = "Suffix for role and policy names"
+}
