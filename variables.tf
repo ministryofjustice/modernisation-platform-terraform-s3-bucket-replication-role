@@ -6,6 +6,7 @@ variable "buckets" {
 variable "tags" {
   type        = map(any)
   description = "Tags to apply to resources, where applicable"
+  default     = {}
 }
 
 variable "suffix_name" {
