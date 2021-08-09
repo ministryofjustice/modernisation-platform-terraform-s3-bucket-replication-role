@@ -1,5 +1,6 @@
 locals {
-  buckets = flatten(var.buckets)
+  buckets            = flatten(var.buckets)
+  replication_bucket = "arn:aws:s3:::${var.replication_bucket}/*"
 }
 
 # S3 bucket replication: role
@@ -35,7 +36,8 @@ data "aws_iam_policy_document" "default-policy" {
     effect = "Allow"
     actions = [
       "s3:GetReplicationConfiguration",
-      "s3:ListBucket",
+      "s3:ListBucket"
+
     ]
     resources = local.buckets
   }
@@ -44,7 +46,11 @@ data "aws_iam_policy_document" "default-policy" {
     effect = "Allow"
     actions = [
       "s3:GetObjectVersion",
-      "s3:GetObjectVersionAcl"
+      "s3:GetObjectVersionAcl",
+      "s3:GetObjectVersionForReplication",
+      "s3:GetObjectLegalHold",
+      "s3:GetObjectRetention",
+      "s3:GetObjectVersionTagging"
     ]
     resources = [
       for bucket in local.buckets :
@@ -56,9 +62,22 @@ data "aws_iam_policy_document" "default-policy" {
     effect = "Allow"
     actions = [
       "s3:ReplicateObject",
-      "s3:ReplicateDelete"
+      "s3:ReplicateDelete",
+      "s3:ReplicateTags",
+      "s3:GetObjectVersionTagging",
+      "s3:ObjectOwnerOverrideToBucketOwner"
     ]
-    resources = ["*"]
+
+    resources = ["${var.replication_bucket != "" ? local.replication_bucket : "*"}"]
+
+    condition {
+      test     = "StringLikeIfExists"
+      variable = "s3:x-amz-server-side-encryption"
+      values = [
+        "aws:kms",
+        "AES256"
+      ]
+    }
   }
 }
 
