@@ -20,6 +20,8 @@ func TestS3Creation(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	roleName := terraform.Output(t, terraformOptions, "role_name")
+	policyName := terraform.Output(t, terraformOptions, "policy_name")
 
 	assert.Regexp(t, regexp.MustCompile(`^AWSS3BucketReplication*`), roleName)
+	assert.Regexp(t, regexp.MustCompile(`^AWSS3BucketReplicationPolicy*`), policyName)
 }
