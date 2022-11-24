@@ -30,6 +30,7 @@ resource "aws_iam_policy" "default" {
 }
 
 # S3 bucket replication: role policy
+# tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "default-policy" {
   version = "2012-10-17"
   statement {
@@ -68,7 +69,7 @@ data "aws_iam_policy_document" "default-policy" {
       "s3:ObjectOwnerOverrideToBucketOwner"
     ]
 
-    resources = ["${var.replication_bucket != "" ? local.replication_bucket : "*"}"]
+    resources = [var.replication_bucket != "" ? local.replication_bucket : "*"]
 
     condition {
       test     = "StringLikeIfExists"
