@@ -8,12 +8,13 @@ A Terraform module to create an IAM role for S3 bucket replication.
 
 ```
 module "s3-replication-role" {
-  source             = "modernisation-platform-terraform-s3-bucket-replication-role"
+  source             = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role.git?ref=v4.0.0"
   buckets            = [module.s3-bucket.bucket.arn]
   replication_bucket = "bucket-name"
   tags               = local.tags
 }
 ```
+Note: If necssary, update the tag at the end of the `source` argument to point to the latest release.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
